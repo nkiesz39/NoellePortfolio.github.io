@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Airbnb Project</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="..\assets\css\main.css" />
+  </head>
+
+  <body class = 'is-preload'>
+  
+    	<!-- Header -->
+	<header id="header">
+		<div class="inner">
+			<!--<a href="#" class="image avatar"><img src="images/avatar.jpg" alt="" /></a> -->
+			<h1><strong>Unveiling the Art of Airbnb Pricing Optimization</strong><br />
+				<br />
+			</h1>
+            <p>Project Link: <a href="https://github.com/nkiesz39/IBM_Data_Analyst_Capstone/blob/main" class="link">
+                Market Analysis and Pricing Optimization for Airbnb Listings in New York and Paris
+            </a>
+
+            </p>
+		</div>
+	</header>
+
+
+
+	<!-- Main -->
+	<div id="main">
+
+		<!-- One -->
+		<section id="one">
+			<header class="major">
+				<h2>Introduction</h2>
+			</header>
+            <section id="intro">
+			<p>Welcome to the journey and deep dive into our capstone project and presentation!
+                This project was a part of the Dev10 Data Professional Training Program. With a small group of collaborators, we had 3 weeks from project conception to presentation.
+                We utilized all facets of training from Data collection, Exploratory Analysis, Machine Learning and model fine tuning. Python was the main programming language used, along with a
+                SQL database created specifically for the project. PowerBI was used for Data Visualization and the Dashboard. 
+            <p> The focus of our project was on the New York City and Paris Airbnb pricing markets. We were interested in discovering whether Yelp attraction and restaurants had
+                an effect on the nightly price. The Yelp Fusion API was used to gather information on the surrounding attractions and restaurants, along with their ratings.
+                Machine Learning models were created to optimize the nightly price and assist hosts in maximizing their rental properties. 
+            </p>
+            <p>
+                Join us as we unravel the intricacies of the NYC and Paris Airbnb pricing markets, exploring
+                the facsinating interplay between Yelp attraction, restaurants, and nightly prices. Along the way, we'll share the discoveries that reshaped our perspectives
+                and the challenges during our exploration for optimal solutions. 
+            </p>
+              <!--  <a href="https://github.com/nkiesz39/IBM_Data_Analyst_Capstone/blob/main" class="link">repo</a> or 
+                the <a href="https://dataplatform.cloud.ibm.com/dashboards/92117510-5e9e-4605-8f99-bb4f6e80756a/view/5e64a7606f9e10c467b5c0e407cd2b0428322758b7bbd602d1d47b4907687097a96d1498c8791e5adc190c66a5b915519d" 
+                class="link">Interactive Cognos Dashboard.</a>
+              -->
+			</p>
+            </section>
+            <h3>Table of Contents</h3>
+            <nav>
+                <!-- Table of Contents -->
+                <ul>
+                    <li><a href="#project-over">Project Overview</a></li>
+                    <li><a href="#data">Data Dive</a></li>
+                    <li><a href="#data-viz">Data visualization</a></li>
+                    <li><a href="#modelling">Machine Learning</a></li>
+                    <li><a href="#conc">Conclusion</a></li>
+                </ul>
+            </nav>
+<!--Project Overview-->           
+            <section id = "project-over">
+                <h2>Project Overview</h2>
+                <p>The goal of this project was to use Airbnb data and Machine Learning
+                    to empower hosts with actionable insights, all aimed to answering the question -
+                    "What should an Airbnb host list their property at to maximize their rental
+                    income"?
+                    <br> We delved into the key questions:
+                    <ul>
+                        <li>Is there a correlation between Airbnb ratings and nearby Yelp restaurants and attractions?</li>
+                        <li>Is there a difference in the New York City and the Paris Markets?</li>
+                        <li>What are the best predictors of the nightly price for an Airbnb?</li>
+                        <li>Within the NYC market, are there strong differences in the five boroughs?</li>
+                        <li>Is there a correlation between population and more or higher priced Airbnbs?</li>
+                        <li>If not, is there correlation with city size?</li>
+                        <li>Is there a significant difference between attractions and restaurant types in NYC and Paris?</li>
+                    </ul>
+			    </p>
+            </section>
+<!-- Data Dive-->
+            <section id="data">
+                <h2>Data Dive</h2>
+                <h3>The Raw Data</h3>
+                <p>
+                    The Airbnb data was obtained from Kaggle.
+                    <a href="https://www.kaggle.com/datasets/mysarahmadbhat/airbnb-listings-reviews" class="link">Airbnb Listings & Reviews</a> 
+                    This dataset contained four CSVs:
+                    <ol>
+                        <li>Listings.csv</li>
+                        <li>Listings_data_dictionary.csv</li>
+                        <li>Reviews.csv</li>
+                        <li>Reviews_data_dictionary.csv</li>
+                    </ol>
+                    For the purposes of the project, we mainly focused on the Listings CSV. It contains 250,000 listings in 10 major cities. 
+                    To make it a little more manageable and insights more interesting, we filtered the data down to NYC and Paris. This still kept over 100,000 listings.
+                    
+                </p>
+                <p>
+                    The <a href="https://docs.developer.yelp.com/reference/v3_business_search" class="link">Yelp Fusion API</a>
+                    was used to pull in data about the nearby restaurants and attraction ratings for both cities. 
+                    After making and fine tuning the API calls, we saved the data into CSVs. We further split NYC into the five boroughs: Manhattan,
+                    Staten Island, Queens, the Bronx, and Brooklyn.
+                </p>
+                <h3>Calling Yelp's API</h3>
+                <p>
+                    In the early stages of the project, spearheading the Extract portion of the ETL process became a focal point,
+                    and a significant portion of my attention was dedicated to crafting the code to utilize the Yelp API. Using the API posed the challenge of allowing only businesses to be retrieved per call.
+                    Navigating these constraints became a defining aspect of the data acquisition. 
+                </p>
+                <p>
+                    When initaially making the calls and checking the data, it was found that all business were coming back from restaurants to salons.
+                    From that information, the parameters for the calls were built out. The restaurant parameters were written as follows:<br>
+                    <code>
+                        restaurant_params = { <br><br>
+                            'term' : 'restaurant',<br>
+                            'limit' = 50,<br>
+                            'radius' : 5000,<br>
+                            'location' : None<br>
+                        }
+                    </code><br>
+                    
+                    The 'term' parameter is used to call all establishments that have been tagged as restaurants. The 'radius' of 5000 is in meters. The 'location' parameter
+                    is set to None so that a list of zip codes can be looped through for each borough and for Paris. For Paris, 
+                    to ensure we were recieving information for Paris, France and not the US where zip codes were the same, the list contains strings the specify Paris and the zip code:
+                    <i>'Paris, 75001'</i>
+                    <br> For the attractions parameters, the only thing that was changed was the 'term' parameter. 'Arts & Entertainment' was used in place of 'Restaurants'. 
+
+                </p>
+                <p>
+                    The API calls were done using a loop. Each zip code was looped through as the location parameter for restaurants and attractions separately. It was returned as a JSON that was then placed into two pandas DataFrames.
+                    This was done for each list of zip codes. In each returned Dataframe there were duplicates, these were addressed during our Data Cleaning and Exploratory Data Analysis. 
+                </p>
+                <p>
+                    After the completion of the calls, a new column called 'Restaurant or Attraction' was added. All DataFrames that came from the restaurant API call had the value 'Restaurant' placed into the column.
+                    While the rest received 'Attraction' as the value. Once that was done, the restaurant and attraction DataFrames were concatenated for each borough and then for Paris. The complete DataFrames were converted to 
+                    CSVs for the ease of use through the rest of our analysis.
+                </p>
+                <h3>Exploratory Data Analysis</h3>
+                <p>
+                    Transform
+
+                </p>
+                <p>
+                    Yelp eDA 
+                </p>
+                <p>
+                    Listing EDA
+                </p>
+                <p>
+                    Both / Distance Calcluation
+                </p>
+            </section>
+<!--Data Viz-->
+            <section id="data-viz">
+                <h2>Data Visualization</h2>
+                <p>
+                    Start EDA and data Viz here:
+                </p>
+            </section>
+<!--Machine Learning-->
+            <section id="modelling">
+                <h2>Machine Learning</h2>
+                <p>
+                    Start ML here:
+                </p>
+            </section>
+<!--Conc-->
+            <section id="conc">
+                <h2>Conclusions</h2>
+                <p>
+                    Start Concs here:
+                </p>
+            </section>
+			<!-- <ul class="actions">
+				<li><a href="#" class="button">Learn More</a></li>
+			</ul> -->
+		</section>
+
+  </body>
+</html>
